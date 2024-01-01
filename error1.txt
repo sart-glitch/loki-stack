@@ -1,0 +1,24 @@
+failed to create memberlist, error="failed to create memberlist: Failed to get final advertise address: no private IP address found, and explicit IP not provided"
+error="context canceled"
+module=usage-report error="failed to start usage-report, because it depends on module memberlist-kv"
+
+
+Solution: 
+
+
+Please place this in the main values file in the loki section:
+loki:
+  enabled: true
+  env:
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+
+  extraArgs:
+    config.expand-env: true
+
+  config:
+    memberlist:
+      bind_addr:
+        - ${MY_POD_IP}

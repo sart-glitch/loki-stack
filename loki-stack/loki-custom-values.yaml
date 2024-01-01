@@ -6,22 +6,35 @@ test_pod:
 
 loki:
   enabled: true
+  env:
+    - name: MY_POD_IP
+      valueFrom:
+        fieldRef:
+          fieldPath: status.podIP
+
+  extraArgs:
+    config.expand-env: true
+
+  config:
+    memberlist:
+      bind_addr:
+        - ${MY_POD_IP}
   persistence:
     enabled: true
     storageClassName: hdd-st1
     size: 125Gi
   isDefault: true
   url: http://{{(include "loki.serviceName" .)}}:{{ .Values.loki.service.port }}
-  readinessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-    initialDelaySeconds: 45
-  livenessProbe:
-    httpGet:
-      path: /ready
-      port: http-metrics
-    initialDelaySeconds: 45
+  #readinessProbe:
+  # httpGet:
+  #    path: /ready
+  #    port: http-metrics
+  #  initialDelaySeconds: 60
+  #livenessProbe:
+  #  httpGet:
+  #    path: /ready
+  #    port: http-metrics
+  #  initialDelaySeconds: 60
   datasource:
     jsonData: "{}"
     uid: ""
@@ -39,7 +52,7 @@ grafana:
   enabled: true
   persistence:
     enabled: true
-    storageClassName: ebs-sc
+    storageClassName: ebs-gp3-sc
     size: 20Gi
   sidecar:
     datasources:
@@ -86,4 +99,4 @@ affinity:
          - key: role
            operator: In
            values:
-             - Dev-Monitoring-NG
+             - Prod-Monitoring

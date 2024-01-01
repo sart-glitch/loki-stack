@@ -261,7 +261,7 @@ affinity:
           - key: role
             operator: In
             values:
-              - Dev-Monitoring-NG
+              - Prod-Monitoring
 
 ## Topology Spread Constraints
 ## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
@@ -1086,7 +1086,7 @@ imageRenderer:
           - key: role
             operator: In
             values:
-              - Dev-Monitoring-NG
+              - Prod-Monitoring
 
 networkPolicy:
   ## @param networkPolicy.enabled Enable creation of NetworkPolicy resources. Only Ingress traffic is filtered for now.

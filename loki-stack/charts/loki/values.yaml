@@ -46,7 +46,7 @@ affinity:
          - key: role
            operator: In
            values:
-             - Dev-Monitoring-NG
+             - Prod-Monitoring
 ## StatefulSet annotations
 annotations: {}
 
